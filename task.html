@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+		.main
+		{
+			width: 400px;
+			margin-left: 300px;
+			border: 4px solid green;
+			background-color: lightgreen;
+		}
+		.container
+		{
+			width: 400px;
+			overflow: hidden;
+			background-color: lightgray;
+		}
+		.container .box
+		{
+			float: left;
+			width: 38px;
+			height: 18px;
+			border: 1px solid green;
+			transition: all .25s ease-in-out; 
+			font-size: 10px;
+			color: red;
+			padding-top: 5px;
+			padding-right: 10px;
+			cursor: pointer;
+			text-align: center;
+		}
+		h2
+		{
+			text-align: center;
+
+			text-decoration-style: bold;
+		}
+		h3
+		{
+			text-align: center;
+			color: green;
+			text-decoration-style: bold;
+		}
+		.t
+		{
+			text-align: right;
+		}
+	</style>
+</head>
+<body>
+	<div class = "main">
+		<h2>Collect X</h2>
+		<h3>Collect as many X as you can in 20 seconds</h3>
+		
+		<div class="t">
+		<button onclick="start()" style="margin-right: 275px;">START</button>
+		<label>Time : <span id="time">0</span></label></br>
+		<label>Score : <span id="score">0</span></label>
+		</div>
+		<div class ="container" id="input"></div>
+	</div>
+</body>
+	<script>
+		var str="";
+		var finalScore = 0;
+		for(var i=0;i<40;i++)
+		{
+			var a="<div class='box' id='box_"+i+"' onclick='ManageScore("+i+")'>0</div>";
+			str+=a;
+		}
+		var element=document.getElementById("input");
+		element.innerHTML=str;
+
+		var sec = 0;
+
+		function randomNumber()
+		{
+ 			 return Math.floor(Math.random() * Math.floor(40));
+		}
+		function start(){
+			updateTime();
+		}
+
+		function updateTime(){
+			var e = document.getElementById("time");
+			e.innerHTML = sec;
+			if(sec==0){
+				genrateXs();
+			}
+			sec++;
+			setTimeout(function(){
+				if(sec<=20){
+					updateTime();
+				}
+				else{
+					finalResult();
+				}
+			},1000);
+		}
+
+
+		function genrateXs(num=-1){
+			var t = document.getElementById("time").innerHTML;
+			if(t<=20){
+				var random =  randomNumber();
+				var a = document.getElementById("score");
+				var score = a.innerHTML;
+
+				if(num==-1) score = -1; //temp
+				if(num!=-1){
+					var el = document.getElementById("box_"+random);
+					var r = document.getElementById("box_"+num);
+					if(r.innerHTML=="X"){
+						el.style.backgroundColor = "blue";
+						el.innerHTML = "X";
+						score++;
+						finalScore = score;
+						a.innerHTML = score;
+						if(num!=random){
+							r.style.backgroundColor = "lightgrey";
+							r.innerHTML = "0";
+						}
+					}
+					else{
+						score--;
+						finalScore = score;
+						a.innerHTML = score;
+					}
+				}
+				else{
+					var el = document.getElementById("box_"+random);
+					el.style.backgroundColor = "blue";
+					el.innerHTML = "X";
+					score++;
+					a.innerHTML = score;
+				}
+			}
+		}
+
+		function ManageScore(num){
+			var t = document.getElementById("time").innerHTML;
+			if(sec<=20 ){
+				genrateXs(num);
+			}
+		}
+
+	
+		function finalResult(){
+			alert("You have scored "+finalScore+" in 20 seconds");
+			window.location.reload(true );
+		}
+
+			
+	</script>
+		}
+</html>
